@@ -21,6 +21,9 @@ def getFuturePublicTenders(term, states):
         slots = str(line.find('div', class_='cd')).replace('<br>', ' ').replace('</br>', '').replace('<br/>', '\n').replace('<span>', '').replace('</span>', '').replace('<div class="cd">', '').replace('</div>', '')
         date = str(line.find('div', class_='ce').find('span')).replace('<br>', ' ').replace('</br>', '').replace('<span>', '').replace('</span>', '')
 
+        if 'Militar' in title:
+            continue
+    
         if state in states:
             message += f'''
 {state} {date} - {title}
