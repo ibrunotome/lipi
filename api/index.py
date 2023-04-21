@@ -45,11 +45,16 @@ def sendTelegramMessage(message):
 
 @app.route('/')
 def home():
+    return 'Bot Telegram para concursos públicos abertos de PC/PRF/PF'
+
+@app.route('/concursos')
+def concursos():
     term = 'policia'
     states = ['SP', 'SC', 'MS', 'PR', 'MG']
     message = getFuturePublicTenders(term, states)
     
     if message:
         sendTelegramMessage(message)
+        return message
 
-    return message
+    return 'Sem concursos para os estados escolhidos'
