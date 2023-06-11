@@ -54,7 +54,7 @@ def sendTelegramMessage(message):
 
 @app.route('/')
 def home():
-    return 'Bot Telegram para concursos públicos abertos de PC/PRF/PF e Guarda Municipal'
+    return 'Bot Telegram para concursos públicos futuros de PC/PRF/PF e Guarda Municipal'
 
 
 @app.route('/concursos')
