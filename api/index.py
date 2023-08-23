@@ -59,8 +59,8 @@ def home():
 
 @app.route('/concursos')
 def concursos():
-    terms = ['policia', 'guarda municipal']
-    states = ['SP', 'SC', 'MS', 'PR']
+    terms = ['policia', 'guarda municipal', 'agente de segurança penitenciário e polícia penal', 'Policial Penal - Agente Penitenciário', 'Agente Penal']
+    states = ['SP', 'SC', 'MG', 'PR', 'RS']
     message = getFuturePublicTendersFromPciConcursos(terms, states)
 
     if message:
