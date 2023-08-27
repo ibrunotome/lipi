@@ -10,7 +10,7 @@ def getFuturePublicTendersFromPciConcursos(terms, states):
     message = ''
 
     for term in terms:
-        response = requests.get(f'https://www.pciconcursos.com.br/pesquisa/?q={term}')
+        response = requests.get(f'https://www.pciconcursos.com.br/pesquisa/?q={term}&sa=Pesquisar&tipopesquisa=1')
         soup = BeautifulSoup(response.text, 'html.parser')
         future_public_tenders = soup.find_all('div', class_=['fa', 'na'])
 
@@ -25,7 +25,10 @@ def getFuturePublicTendersFromPciConcursos(terms, states):
             date = str(line.find('div', class_='ce').find('span')).replace(
                 '<br>', ' ').replace('</br>', '').replace('<span>', '').replace('</span>', '')
 
-            if 'Militar' in title:
+            if any(substring in title for substring in ['Militar', 'Instituto', 'Universidade']):
+                continue
+
+            if any(substring in slots for substring in ['Operador', 'Professor', 'Escolar', 'Endemias', 'Saúde', 'Limpeza', 'Serviços', 'Agente Administrativo']):
                 continue
 
             if state in states:
@@ -61,17 +64,14 @@ def home():
 def concursos():
     terms = [
         'policia', 
-        'guarda municipal', 
-        'agente de segurança penitenciário e polícia penal', 
-        'Policial Penal - Agente Penitenciário', 
-        'Agente Penal',
+        'policial', 
+        'guarda+municipal', 
+        'agente+penitenciario', 
         'investigador',
-        'PRF',
-        'policia rodoviaria federal'
     ]
     states = ['SP', 'SC', 'MG', 'PR', 'RS']
     message = getFuturePublicTendersFromPciConcursos(terms, states)
-
+    
     if message:
         sendTelegramMessage(message)
         return message
