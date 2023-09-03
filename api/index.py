@@ -28,7 +28,7 @@ def getFuturePublicTendersFromPciConcursos(terms, states):
             if any(substring in title for substring in ['Militar', 'Instituto', 'Universidade']):
                 continue
 
-            if any(substring in slots for substring in ['Operador', 'Professor', 'Escolar', 'Endemias', 'Saúde', 'Limpeza', 'Serviços', 'Agente Administrativo']):
+            if any(substring in slots for substring in ['Operador', 'Professor', 'Escolar', 'Endemias', 'Saúde', 'Limpeza', 'Serviços', 'Administrativo', 'Alimentação']):
                 continue
 
             if state in states:
