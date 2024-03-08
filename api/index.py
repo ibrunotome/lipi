@@ -71,7 +71,7 @@ def concursos():
         'agente+seguranca', 
         'investigador',
     ]
-    states = ['SP', 'SC', 'PR', 'RS']
+    states = ['SP', 'SC', 'PR', 'RS', 'MG']
     message = getFuturePublicTendersFromPciConcursos(terms, states)
     
     if message:
