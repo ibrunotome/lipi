@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 def alreadyAdded(a, b):
     try:
-        return a.index(b)
+        return a.index(b) != -1
     except:
         return False
 
