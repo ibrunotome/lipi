@@ -5,9 +5,15 @@ import os
 
 app = Flask(__name__)
 
+def alreadyAdded(a, b):
+    try:
+        return a.index(b)
+    except:
+        return False
 
 def getFuturePublicTendersFromPciConcursos(terms, states):
     message = ''
+    links = []
 
     for term in terms:
         response = requests.get(f'https://www.pciconcursos.com.br/pesquisa/?q={term}&sa=Pesquisar&tipopesquisa=1')
@@ -25,11 +31,16 @@ def getFuturePublicTendersFromPciConcursos(terms, states):
             date = str(line.find('div', class_='ce').find('span')).replace(
                 '<br>', ' ').replace('</br>', '').replace('<span>', '').replace('</span>', '')
 
+            if alreadyAdded(links, link):
+                continue
+
             if any(substring in title for substring in ['Militar', 'Instituto', 'Universidade']):
                 continue
 
             if any(substring in slots for substring in ['Operador', 'Professor', 'Escolar', 'Endemias', 'Saúde', 'Limpeza', 'Serviços', 'Administrativo', 'Alimentação', 'Financeiro', 'Escriturário', 'Fazendário']):
                 continue
+
+            links.append(link)
 
             if state in states:
                 message += f'''
