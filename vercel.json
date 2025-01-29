@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/concursos",
-      "schedule": "10 15 * * 0"
+      "schedule": "0 18 * * *"
     }
   ]
 }
