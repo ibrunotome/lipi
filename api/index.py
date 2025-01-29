@@ -12,9 +12,16 @@ month_mapping = {
     'jul': 'Jul', 'ago': 'Aug', 'set': 'Sep', 'out': 'Oct', 'nov': 'Nov', 'dez': 'Dec',
 }
 
+def alreadyAdded(a, b):
+    try:
+        return a.index(b) != -1
+    except:
+        return False
+
 
 def getFutureEventsFromPciConcursos(terms, blacklist, states):
     message = ''
+    links = []
 
     for term in terms:
         response = requests.get(f'https://www.pciconcursos.com.br/pesquisa/?q={term}&sa=Pesquisar&tipopesquisa=1')
@@ -32,8 +39,13 @@ def getFutureEventsFromPciConcursos(terms, blacklist, states):
             date = str(line.find('div', class_='ce').find('span')).replace(
                 '<br>', ' ').replace('</br>', '').replace('<span>', '').replace('</span>', '')
 
+            if alreadyAdded(links, link):
+                continue
+
             if any(substring in slots for substring in blacklist):
                 continue
+
+            links.append(link)
 
             if state in states:
                 message += f'''
@@ -50,7 +62,7 @@ def getFutureEventsFromPciConcursos(terms, blacklist, states):
 def getFutureEventsFromEnergiaConcursos(terms, blacklist):
     message = ''
 
-    posts = []
+    links = []
     for term in terms:
         response = requests.get(f'https://www.energiaconcursos.com.br/?s={term}')
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -65,7 +77,7 @@ def getFutureEventsFromEnergiaConcursos(terms, blacklist):
             link = line.find('a').get('href')
             date = line.find('time').get_text()
 
-            if id in posts:
+            if alreadyAdded(links, link):
                 continue
 
             if any(substring in title for substring in blacklist):
@@ -74,7 +86,7 @@ def getFutureEventsFromEnergiaConcursos(terms, blacklist):
             if is_older_than_24h(date):
                 continue
 
-            posts.append(id)
+            links.append(link)
 
             message += f'''
 {date} - {title}
