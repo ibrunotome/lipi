@@ -12,6 +12,19 @@ month_mapping = {
     'jul': 'Jul', 'ago': 'Aug', 'set': 'Sep', 'out': 'Oct', 'nov': 'Nov', 'dez': 'Dec',
 }
 
+terms = [
+    'policia', 
+    'policial',
+    'dease',
+    'agente',
+    'guarda+municipal',
+    'investigador',
+    'civil',
+    'federal',
+]
+
+states = ['SP', 'SC', 'PR', 'RS']
+
 def alreadyAdded(a, b):
     try:
         return a.index(b) != -1
@@ -19,7 +32,7 @@ def alreadyAdded(a, b):
         return False
 
 
-def getFutureEventsFromPciConcursos(terms, blacklist, states):
+def getFutureEventsFromPciConcursos():
     message = ''
     links = []
 
@@ -42,9 +55,6 @@ def getFutureEventsFromPciConcursos(terms, blacklist, states):
             if alreadyAdded(links, link):
                 continue
 
-            if any(substring in slots for substring in blacklist):
-                continue
-
             links.append(link)
 
             if state in states:
@@ -59,7 +69,7 @@ def getFutureEventsFromPciConcursos(terms, blacklist, states):
     return message
 
 
-def getFutureEventsFromEnergiaConcursos(terms, blacklist):
+def getFutureEventsFromEnergiaConcursos():
     message = ''
 
     links = []
@@ -78,9 +88,6 @@ def getFutureEventsFromEnergiaConcursos(terms, blacklist):
             date = line.find('time').get_text()
 
             if alreadyAdded(links, link):
-                continue
-
-            if any(substring in title for substring in blacklist):
                 continue
 
             if is_older_than_24h(date):
@@ -153,40 +160,20 @@ def home():
     return 'Bot Telegram para concursos públicos futuros de PC/PRF/PF e Guarda Municipal'
 
 
-@app.route('/concursos')
-def concursos():
-    terms = [
-        'policia', 
-        'policial',
-        'dease',
-        'guarda+municipal', 
-        'agente+penitenciario', 
-        'agente+seguranca', 
-        'investigador',
-    ]
-
-    blacklist = [
-        'Instituto', 
-        'Universidade',
-        'Operador', 
-        'Professor', 
-        'Escolar',
-        'Endemias',
-        'Saúde',
-        'Limpeza',
-        'Serviços',
-        'Administrativo',
-        'Alimentação',
-        'Financeiro',
-        'Escriturário',
-        'Fazendário'
-    ]
-
-    states = ['SP', 'SC', 'PR', 'RS']
-
+@app.route('/concursos/pci')
+def concursosPci():
     message = ''
-    message += getFutureEventsFromPciConcursos(terms, blacklist, states)
-    message += getFutureEventsFromEnergiaConcursos(terms, blacklist)
+    message += getFutureEventsFromPciConcursos()
+
+    if message:
+        sendTelegramMessage(message)
+
+    return message
+
+@app.route('/concursos/energia')
+def concursosEnergia():
+    message = ''
+    message += getFutureEventsFromEnergiaConcursos()
 
     if message:
         sendTelegramMessage(message)

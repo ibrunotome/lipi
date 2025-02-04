@@ -1,9 +1,3 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }],
-  "crons": [
-    {
-      "path": "/concursos",
-      "schedule": "0 17 * * *"
-    }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
 }
