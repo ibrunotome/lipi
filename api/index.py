@@ -14,13 +14,27 @@ month_mapping = {
 
 terms = [
     'policia', 
-    'policial',
-    'dease',
+    'guarda', 
     'agente',
-    'guarda+municipal',
-    'investigador',
-    'civil',
-    'federal',
+    'vigia',
+]
+
+blacklist = [
+    'Administrativo',
+    'Agente de Combate',
+    'Agente de Serviços Gerais',
+    'Ambiental',
+    'Construção',
+    'Contador',
+    'Consumidor',
+    'Defesa Civil',
+    'Endemias',
+    'Engenheiro',
+    'Escolar',
+    'Ornamentação',
+    'Professor',
+    'Saúde',
+    'Servente'
 ]
 
 states = ['SP', 'SC', 'PR', 'RS']
@@ -53,6 +67,12 @@ def getFutureEventsFromPciConcursos():
                 '<br>', ' ').replace('</br>', '').replace('<span>', '').replace('</span>', '')
 
             if alreadyAdded(links, link):
+                continue
+
+            if any(substring in title for substring in blacklist):
+                continue
+
+            if any(substring in slots for substring in blacklist):
                 continue
 
             links.append(link)
@@ -180,5 +200,5 @@ def concursosEnergia():
 
     return message
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
