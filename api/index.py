@@ -24,6 +24,7 @@ blacklist = [
     'Agente de Combate',
     'Agente de Serviços Gerais',
     'Ambiental',
+    'Copa',
     'Construção',
     'Contador',
     'Consumidor',
